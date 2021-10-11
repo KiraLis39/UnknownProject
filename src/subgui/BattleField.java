@@ -22,20 +22,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import engine.Cell;
-import entitys.Creature;
+import entitys.proto.Creature;
 import entitys.Goblin;
 import entitys.Hero;
 import entitys.Troll;
-import entitys.iGameObjects;
-import fox.adds.InputAction;
-import fox.builders.FoxFontBuilder.FONT;
+import entitys.proto.iGameObjects;
+import fox.FoxFontBuilder;
+import fox.InputAction;
 import items.Aids;
 import items.Enpoison;
 import items.Finish;
 import items.Item;
 import items.Tool;
 import items.ToolExample;
-import registry.Registry;
+
+import static fox.FoxFontBuilder.FONT;
 
 
 @SuppressWarnings("serial")
@@ -43,9 +44,9 @@ public class BattleField extends JPanel {
 	public static enum Moving {RIGHT , LEFT, UP, DOWN, BACK}
 	
 	private InputAction inAc = new InputAction();
-	private Font bigFont = Registry.ffb.setFoxFont(FONT.CAMBRIA, 36, true);
-	private Font medFont = Registry.ffb.setFoxFont(FONT.CAMBRIA, 28, true);
-	private Font defaultFont = Registry.ffb.setFoxFont(FONT.ARIAL_NARROW, 14, false);
+	private Font bigFont = FoxFontBuilder.setFoxFont(FONT.CAMBRIA, 36, true);
+	private Font medFont = FoxFontBuilder.setFoxFont(FONT.CAMBRIA, 28, true);
+	private Font defaultFont = FoxFontBuilder.setFoxFont(FONT.ARIAL_NARROW, 14, false);
 	
 	private BufferedImage backgroundImage;
 	private BufferedImage[] levelsBackgrounds;
@@ -141,11 +142,11 @@ public class BattleField extends JPanel {
 				"T:0", " ", " ", " ", " ", " ", "E", "F"
 			},
 			{ // level 8:
-				" ", " ", " ", " ", " ", " ", " ", " ",
-				" ", " ", " ", " ", " ", " ", " ", " ",
-				" ", " ", " ", " ", " ", " ", " ", " ",
-				" ", " ", " ", " ", " ", " ", " ", " ",
-				" ", " ", " ", " ", " ", " ", " ", "F"
+				" ", " ", " ", "G", " ", " ", " ", "S",
+				" ", " ", "G", " ", " ", " ", "S", " ",
+				" ", "G", " ", " ", " ", "S", " ", "G",
+				"G", " ", " ", " ", "S", " ", "G", " ",
+				" ", " ", " ", "S", " ", "G", " ", "F"
 			},
 			{ // level 9:
 				" ", " ", " ", " ", " ", " ", " ", " ",
@@ -181,7 +182,8 @@ public class BattleField extends JPanel {
 
 	public void startLevel(int index) {
 		currentLevelIndex = index;
-		try{backgroundImage = levelsBackgrounds[index];} catch (Exception e) {/* IGNORE BG & DRAW GRAY BACK THAN */}
+		try{backgroundImage = levelsBackgrounds[index];
+		} catch (Exception e) {/* IGNORE BG & DRAW GRAY BACK THAN */}
 				
 		int m = 0;
 		for (Cell cell : cells) {
@@ -241,15 +243,15 @@ public class BattleField extends JPanel {
 //		image.getScaledInstance(1024, 768, 2);
 //		g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.0f));
 		
-//		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//		g2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //		g2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 //		g2D.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 //		g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		
-//		g2D.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-//		g2D.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+		g2D.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g2D.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 		
 //		g2D.setRenderingHint(RenderingHints.KEY_RESOLUTION_VARIANT, RenderingHints.VALUE_RESOLUTION_VARIANT_BASE);
 //		g2D.setRenderingHint(RenderingHints.KEY_RESOLUTION_VARIANT, RenderingHints.VALUE_RESOLUTION_VARIANT_DPI_FIT);
@@ -274,25 +276,25 @@ public class BattleField extends JPanel {
 			lc ="LEVEL " + currentLevelIndex + " COMPLETE!";
 			g2D.setFont(bigFont);
 			g2D.setColor(Color.BLACK);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2D) - 3, getHeight() / 2 + 3);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2D) - 3, getHeight() / 2 + 3);
 			g2D.setColor(Color.GREEN);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2D), getHeight() / 2);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2D), getHeight() / 2);
 			
 			lc = currentLevelIndex < levelsMassive.length - 1 ? "press ENTER to continue" : "Thanks for playing! =^_^=";
 			g2D.setFont(medFont);
 			g2D.setColor(Color.BLACK);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2) - 3, getHeight() / 2 + 33);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2) - 3, getHeight() / 2 + 33);
 			g2D.setColor(Color.GREEN);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2), getHeight() / 2 + 30);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2), getHeight() / 2 + 30);
 		}
 		
 		if (isGameOver) {
 			lc = "ITS ALL YOUR FAIL...";
 			g2D.setFont(bigFont);
 			g2D.setColor(Color.BLACK);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2) - 3, getHeight() / 2 + 3);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2) - 3, getHeight() / 2 + 3);
 			g2D.setColor(Color.RED);
-			g2D.drawString(lc, getWidth() / 2 - (int) (Registry.ffb.getStringBounds(g2D, lc).getWidth() / 2), getHeight() / 2);
+			g2D.drawString(lc, getWidth() / 2 - (int) (FoxFontBuilder.getStringBounds(g2D, lc).getWidth() / 2), getHeight() / 2);
 		}
 	}
 
@@ -467,6 +469,6 @@ public class BattleField extends JPanel {
 
 	public static String getPlayerName() {return player.getName();}
 	public static Point getPlayerCoordinates() {return new Point(getCell(player).getColumnIndex(), getCell(player).getRowIndex());}
-	public static int getPlayerHP() {	return player.getHP();}
+	public static int getPlayerHP() {return player.getHP();}
 	public static int getPlayerEN() {return player.getEnergy();}
 }

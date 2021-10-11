@@ -3,7 +3,7 @@ package items;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import entitys.iGameObjects;
+import entitys.proto.iGameObjects;
 
 
 public abstract class Tool implements iGameObjects {

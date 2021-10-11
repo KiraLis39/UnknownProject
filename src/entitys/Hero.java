@@ -1,5 +1,7 @@
 package entitys;
 
+import entitys.proto.Creature;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 

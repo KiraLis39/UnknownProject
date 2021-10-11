@@ -1,22 +1,22 @@
 package subgui;
 
+import fox.FoxFontBuilder;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import fox.builders.FoxFontBuilder.FONT;
-import registry.Registry;
+import static fox.FoxFontBuilder.FONT;
 
 
 @SuppressWarnings("serial")
 public class InfoPane extends JPanel {
 	private JLabel labelCoordinates, labelHeroHP, labelHeroEnergy;
-	private Font infoFont = Registry.ffb.setFoxFont(FONT.LEELAWADEE, 18, false);
+	private Font infoFont = FoxFontBuilder.setFoxFont(FONT.LEELAWADEE, 18, false);
 	
 	public InfoPane() {
 		setPreferredSize(new Dimension(256, 0));

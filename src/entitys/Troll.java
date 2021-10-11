@@ -1,5 +1,7 @@
 package entitys;
 
+import entitys.proto.Creature;
+
 import java.awt.image.BufferedImage;
 
 public class Troll extends Creature {

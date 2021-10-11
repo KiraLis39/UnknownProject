@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import entitys.Creature;
+import entitys.proto.Creature;
 import entitys.Hero;
-import entitys.iGameObjects;
+import entitys.proto.iGameObjects;
 import items.Item;
 import subgui.BattleField;
 
